@@ -1,5 +1,6 @@
 ﻿using System;
 using Project0.StoreApplication.Domain.Models;
+using Project0.StoreApplication.Domain.Abstracts;
 using Project0.StoreApplication.Storage.Repositories;
 
 namespace Project0.Application.Client
@@ -23,20 +24,26 @@ namespace Project0.Application.Client
             PrintAllProductNames();
             System.Console.WriteLine(p.SelectAProduct());
 
+            //Exit Screen Call
+            ExitScreen();
+            ExitInput();
+
         }
 
         static void PrintAllStoreLocations()
         {
             var StoreRepository = new StoreRepository();
-            int i = 1;
+            int listNum = 1;
+
+            Console.WriteLine("\n\n----------------\n\n");
 
             foreach(var store in StoreRepository.Stores)
             {
-                System.Console.WriteLine(i + "-" + store);
-                i += 1;
+                System.Console.WriteLine(listNum + "-" + store);
+                listNum++;
             }
 
-            Console.WriteLine("Please select one of our stores by number!");
+            Console.WriteLine("\nPlease select one of our stores by number!");
             
         }
 
@@ -54,13 +61,17 @@ namespace Project0.Application.Client
         static void PrintAllProductNames()
         {
             var ProductRepository = new ProductRepository();
+            int listNum = 1;
+
+            Console.WriteLine("\n\n----------------\n\n");
 
             foreach (var product in ProductRepository.Products)
             {
-                Console.WriteLine(product);
+                Console.WriteLine(listNum + ". " + product);
+                listNum++;
             }
 
-            Console.WriteLine("Please select one of our finest products!");
+            Console.WriteLine("\nPlease select one of our finest products!");
         }
 
         Product SelectAProduct()
@@ -77,14 +88,14 @@ namespace Project0.Application.Client
         {
             var CustomerRepository = new CustomerRepository();
 
-            Console.WriteLine("Welcome to WeenieHut.Inc App!");
+            Console.WriteLine("Welcome to WeenieHut.Inc App!\n");
 
             foreach (var customer in CustomerRepository.Customers)
             {
                 Console.WriteLine(customer);
             }
 
-            Console.WriteLine("What is your name?");
+            Console.WriteLine("\nWhat is your name?");
         }
 
         Customer SelectACustomer()
@@ -97,6 +108,16 @@ namespace Project0.Application.Client
             return customer;
         }
 
+        static void ExitScreen()
+        {
+            Console.WriteLine("Thank you for your business. Would like to continue?");
+        }
+
+        static int ExitInput()
+        {
+            var exit = int.Parse(Console.ReadLine());
+            return exit;
+        }
 
     }
 }

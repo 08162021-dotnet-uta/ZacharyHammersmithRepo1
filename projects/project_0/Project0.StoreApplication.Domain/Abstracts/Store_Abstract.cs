@@ -1,9 +1,8 @@
-using System;
-
-namespace Project0.StoreApplication.Domain.Models
+namespace Project0.StoreApplication.Domain.Abstracts
 {
-    public class Store
+    public abstract class Store
     {
+        public byte StoreId {get; set;}
         public string Name {get; set;}
 
         public override string ToString()
@@ -20,4 +19,5 @@ namespace Project0.StoreApplication.Domain.Models
             } 
         }
     }
+
 }

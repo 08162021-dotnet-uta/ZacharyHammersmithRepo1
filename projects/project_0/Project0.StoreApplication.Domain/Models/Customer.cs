@@ -2,6 +2,7 @@ namespace Project0.StoreApplication.Domain.Models
 {
     public class Customer
     {
+        public byte CustomerId {get; set;}
         public string CustomerName {get; set;}
     
 
