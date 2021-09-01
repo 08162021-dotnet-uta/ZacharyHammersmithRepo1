@@ -15,7 +15,35 @@ namespace Project0.StoreApplication.Testing
             Assert.NotNull(actual);
 
         }
-    
 
+        public void Test_CustomerCollection(){
+
+            var sut = new CustomerRepository();
+
+            var actual = sut.Customers;
+
+            Assert.NotNull(actual);
+
+        }
+
+        public void Test_ProductCollection(){
+
+            var sut = new ProductRepository();
+
+            var actual = sut.Products;
+
+            Assert.NotNull(actual);
+
+        }
+
+        public void Test_OrderCollection(){
+
+            var sut = new OrderRepository();
+
+            var actual = sut.Orders;
+
+            Assert.NotNull(actual);
+
+        }
     }
 }

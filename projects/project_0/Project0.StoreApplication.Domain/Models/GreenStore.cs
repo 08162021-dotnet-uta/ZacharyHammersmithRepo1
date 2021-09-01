@@ -2,12 +2,12 @@ using Project0.StoreApplication.Domain.Abstracts;
 
 namespace Project0.StoreApplication.Domain.Models
 {
-    public class WeenieHutGeneral : Store
+    public class GreenStore : Store
     {
 
-        public WeenieHutGeneral(){
+        public GreenStore(){
 
-            Name = "Weenie Hut General";
+            Name = "Green Store";
 
         }
 

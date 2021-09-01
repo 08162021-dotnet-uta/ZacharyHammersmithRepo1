@@ -9,6 +9,7 @@ namespace Project0.StoreApplication.Storage.Repositories
     {
         public List<Customer> Customers { get; set; }
 
+
         public CustomerRepository()
         {
             Customers = new List<Customer>()

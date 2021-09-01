@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+
 namespace Project0.StoreApplication.Domain.Models
 {
     public class Customer
     {
         public byte CustomerId {get; set;}
         public string CustomerName {get; set;}
+        public List<Order> Orders {get; set;}
     
 
         public override string ToString()

@@ -9,15 +9,12 @@ namespace Project0.StoreApplication.Storage.Repositories
     {
         public List<Product> Products { get; set; }
 
-        public List<Product> Products1 { get; set; }
-    
-
         public ProductRepository(){
             Products = new List<Product>()
             {
-                new Product(){ProductName= "Krabby Patty"},
-                new Product(){ProductName = "Krabby Patty w/ Blue Jelly"},
-                new Product(){ProductName = "Bubble Bass Special"}
+                new Product(){ProductName= "Pancake Batter"},
+                new Product(){ProductName = "Graham Crackers"},
+                new Product(){ProductName = "Chili Mix"}
             };
         }
     }

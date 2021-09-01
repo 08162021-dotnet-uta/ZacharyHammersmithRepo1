@@ -1,49 +1,70 @@
 ﻿using System;
+using System.Collections.Generic;
 using Project0.StoreApplication.Domain.Models;
 using Project0.StoreApplication.Domain.Abstracts;
 using Project0.StoreApplication.Storage.Repositories;
+using Project0.StoreApplication.Storage.Adapters;
+using Serilog;
 
 namespace Project0.Application.Client
 {
     class Program
     {
+        private static readonly FileAdapter storeFileAdapter = new FileAdapter();
         static void Main(string[] args)
         {
-            //Customer Client Calls
-            var c = new Program();
-            PrintAllCustomerNames();
-            System.Console.WriteLine(c.SelectACustomer());
+            Log.Logger = new LoggerConfiguration().WriteTo.File(@"/home/zacharyhammersmith/revature/zach_code/projects/project_0/Project0.StoreApplication.Storage/Data/StoreAppLog.xml").CreateLogger();
 
-            //Store Client Calls
-            var s = new Program();
-            PrintAllStoreLocations();
-            System.Console.WriteLine(s.SelectAStore());
+            var Exit = 0;
 
-            //Product Client Calls
-            var p = new Program();
-            PrintAllProductNames();
-            System.Console.WriteLine(p.SelectAProduct());
+            while (Exit == 0){
+                //Customer Client Calls
+                var c = new Program();
+                PrintAllCustomerNames();
+                System.Console.WriteLine(c.SelectACustomer());
 
-            //Exit Screen Call
+                //Store Client Calls
+                var s = new Program();
+                PrintAllStoreLocations();
+                System.Console.WriteLine(s.SelectAStore());
+
+                //Product Client Calls
+                var p = new Program();
+                PrintAllProductNames();
+                System.Console.WriteLine(p.SelectAProduct());
+
+                Console.WriteLine("Would you like to continue?");
+                Exit = int.Parse(Console.ReadLine());
+            }
             ExitScreen();
-            ExitInput();
 
         }
 
         static void PrintAllStoreLocations()
         {
-            var StoreRepository = new StoreRepository();
-            int listNum = 1;
-
-            Console.WriteLine("\n\n----------------\n\n");
-
-            foreach(var store in StoreRepository.Stores)
+            try
             {
-                System.Console.WriteLine(listNum + "-" + store);
-                listNum++;
+                Log.Information("Application Store Loading");
+
+                var StoreRepository = new StoreRepository();
+                int listNum = 1;
+
+                Console.WriteLine("\n\n----------------\n\n");
+
+                foreach(var store in StoreRepository.Stores)
+                {
+                    System.Console.WriteLine(listNum + ". " + store);
+                    listNum++;
+                }
+
+                Console.WriteLine("\nPlease select one of our stores by number!");
             }
 
-            Console.WriteLine("\nPlease select one of our stores by number!");
+            catch (Exception e)
+            {
+                Log.Fatal("Application Failed Loading");
+                Log.Fatal("Here's Why:", e);
+            }
             
         }
 
@@ -51,35 +72,46 @@ namespace Project0.Application.Client
         {
             var sr = new StoreRepository().Stores;
 
-            var option = int.Parse(Console.ReadLine());
-            var store = sr[option - 1];
+            var store = sr[int.Parse(Console.ReadLine()) - 1];
 
+            storeFileAdapter.SaveData<Store>(new List<Store> {store});
+            
             return store;
-
         }
 
         static void PrintAllProductNames()
         {
-            var ProductRepository = new ProductRepository();
-            int listNum = 1;
-
-            Console.WriteLine("\n\n----------------\n\n");
-
-            foreach (var product in ProductRepository.Products)
+            try
             {
-                Console.WriteLine(listNum + ". " + product);
-                listNum++;
-            }
+                Log.Information("Application Product Loading");
 
-            Console.WriteLine("\nPlease select one of our finest products!");
+                var ProductRepository = new ProductRepository();
+                int listNum = 1;
+
+                Console.WriteLine("\n\n----------------\n\n");
+
+                foreach (var product in ProductRepository.Products)
+                {
+                    Console.WriteLine(listNum + ". " + product);
+                    listNum++;
+                }
+            
+                Console.WriteLine("\nPlease select one of our finest products!");
+            }
+            catch (Exception e)
+            {
+                Log.Fatal("Application Failed Loading");
+                Log.Fatal("Here's Why:", e);
+            }
         }
 
         Product SelectAProduct()
         {
             var sr = new ProductRepository().Products;
 
-            var option = int.Parse(Console.ReadLine());
-            var product = sr[option - 1];
+            var product = sr[int.Parse(Console.ReadLine()) - 1];
+
+            storeFileAdapter.SaveData<Product>(new List<Product> {product});
 
             return product;
         }
@@ -88,29 +120,44 @@ namespace Project0.Application.Client
         {
             var CustomerRepository = new CustomerRepository();
 
-            Console.WriteLine("Welcome to WeenieHut.Inc App!\n");
-
-            foreach (var customer in CustomerRepository.Customers)
+            try
             {
-                Console.WriteLine(customer);
+                Log.Information("Application Start Loading");
+
+                Console.WriteLine("Welcome to WeenieHut.Inc App!\n");
+                int listNum = 1;
+
+                foreach (var customer in CustomerRepository.Customers)
+                {
+                    Console.WriteLine(listNum + ". " + customer);
+                    listNum++;
+                }
+
+                Console.WriteLine("\nWhat is your name?");
             }
 
-            Console.WriteLine("\nWhat is your name?");
+            catch (Exception e)
+            {
+                Log.Fatal("Application Failed Loading");
+                Log.Fatal("Here's Why:", e);
+            }
         }
 
         Customer SelectACustomer()
         {
             var sr = new CustomerRepository().Customers;
 
-            var option = int.Parse(Console.ReadLine());
-            var customer = sr[option - 1];
+            var customer = sr[int.Parse(Console.ReadLine()) - 1];
+
+            storeFileAdapter.SaveData<Customer>(new List<Customer> {customer});
 
             return customer;
         }
 
         static void ExitScreen()
         {
-            Console.WriteLine("Thank you for your business. Would like to continue?");
+            Log.Information("Application Exit");
+            Console.WriteLine("Thank you for your business. Come again soon!");
         }
 
         static int ExitInput()
