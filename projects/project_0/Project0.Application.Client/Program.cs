@@ -4,13 +4,14 @@ using Project0.StoreApplication.Domain.Models;
 using Project0.StoreApplication.Domain.Abstracts;
 using Project0.StoreApplication.Storage.Repositories;
 using Project0.StoreApplication.Storage.Adapters;
+using Project0.StoreApplication.Storage.Data;
 using Serilog;
 
 namespace Project0.Application.Client
 {
     class Program
     {
-        private static readonly FileAdapter storeFileAdapter = new FileAdapter();
+        private DBAdapter _db = new DBAdapter();
         static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration().WriteTo.File(@"/home/zacharyhammersmith/revature/zach_code/projects/project_0/Project0.StoreApplication.Storage/Data/StoreAppLog.xml").CreateLogger();
@@ -72,9 +73,9 @@ namespace Project0.Application.Client
         {
             var sr = new StoreRepository().Stores;
 
-            var store = sr[int.Parse(Console.ReadLine()) - 1];
+            var storeDb = new DEMO();
 
-            storeFileAdapter.SaveData<Store>(new List<Store> {store});
+            var store = storeDb.GetStore()[int.Parse(Console.ReadLine()) - 1];
             
             return store;
         }
@@ -109,49 +110,29 @@ namespace Project0.Application.Client
         {
             var sr = new ProductRepository().Products;
 
-            var product = sr[int.Parse(Console.ReadLine()) - 1];
+            var prodDb = new DEMO();
 
-            storeFileAdapter.SaveData<Product>(new List<Product> {product});
+            var prod = prodDb.GetProduct()[int.Parse(Console.ReadLine()) - 1];
 
-            return product;
+            return prod;
         }
 
         static void PrintAllCustomerNames()
         {
             var CustomerRepository = new CustomerRepository();
 
-            try
-            {
-                Log.Information("Application Start Loading");
-
-                Console.WriteLine("Welcome to WeenieHut.Inc App!\n");
-                int listNum = 1;
-
-                foreach (var customer in CustomerRepository.Customers)
-                {
-                    Console.WriteLine(listNum + ". " + customer);
-                    listNum++;
-                }
-
-                Console.WriteLine("\nWhat is your name?");
-            }
-
-            catch (Exception e)
-            {
-                Log.Fatal("Application Failed Loading");
-                Log.Fatal("Here's Why:", e);
-            }
+            
         }
 
         Customer SelectACustomer()
         {
             var sr = new CustomerRepository().Customers;
 
-            var customer = sr[int.Parse(Console.ReadLine()) - 1];
+            var storedb = new DEMO();
 
-            storeFileAdapter.SaveData<Customer>(new List<Customer> {customer});
+            var custDb = storedb.GetCustomer()[int.Parse(Console.ReadLine()) - 1];
 
-            return customer;
+            return custDb;
         }
 
         static void ExitScreen()
